@@ -1,8 +1,15 @@
 import styles from "./style.module.css";
 
-const Layout = ({ id, title, descr, urlBg = false, colorBg = false }) => {
+const Layout = ({
+  id,
+  title,
+  descr,
+  urlBg = false,
+  colorBg = false,
+  children,
+}) => {
   const styleRoot = urlBg
-    ? { backgroundImage: "url(" + urlBg + ")" }
+    ? { backgroundImage: `url(${urlBg})` }
     : colorBg
     ? { backgroundColor: colorBg }
     : {};
@@ -17,11 +24,11 @@ const Layout = ({ id, title, descr, urlBg = false, colorBg = false }) => {
               <span className={styles.separator}></span>
             </div>
           )}
-          {descr && (
-            <div className={styles.desc + " " + styles.full}>
-              <p>{descr}</p>
-            </div>
-          )}
+
+          <div className={`${styles.desc} ${styles.full}`}>
+            {descr && <p>{descr}</p>}
+            {children}
+          </div>
         </article>
       </div>
     </section>
