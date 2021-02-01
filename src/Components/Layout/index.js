@@ -1,4 +1,5 @@
 import styles from "./style.module.css";
+import cn from "classnames";
 
 const Layout = ({
   id,
@@ -25,7 +26,7 @@ const Layout = ({
             </div>
           )}
 
-          <div className={`${styles.desc} ${styles.full}`}>
+          <div className={cn(styles.desc, styles.full)}>
             {descr && <p>{descr}</p>}
             {children}
           </div>

@@ -1,15 +1,16 @@
 import styles from "./style.module.css";
 import { useState } from "react";
 import cardBack from "../../img/card-back-side.jpg";
+import cn from "classnames";
 
 const PokemonCard = ({ name, img, id, type, values }) => {
   const [isActive, setActive] = useState(false);
   const handleActive = () => {
-    isActive === false ? setActive(true) : setActive(false);
+    setActive(!isActive);
   };
   return (
     <div className={styles.root} onClick={handleActive}>
-      <div className={`${styles.pokemonCard} ${isActive ? styles.active : ""}`}>
+      <div className={cn(styles.pokemonCard, { [styles.active]: isActive })}>
         <div className={styles.cardFront}>
           <div className={`${styles.wrap} ${styles.front}`}>
             <div className={`${styles.pokemon} ${styles[type]}`}>
@@ -42,7 +43,7 @@ const PokemonCard = ({ name, img, id, type, values }) => {
         </div>
 
         <div className={styles.cardBack}>
-          <div className={`${styles.wrap} ${styles.back}`}>
+          <div className={cn(styles.wrap, styles.back)}>
             <img src={cardBack} alt="Сard Backed" />
           </div>
         </div>
