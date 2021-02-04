@@ -1,20 +1,17 @@
 import styles from "./style.module.css";
 import cn from "classnames";
 
-const NavBar = ({ openMenu, toggleMenu }) => {
-  const onToogleMenu = () => {
-    toggleMenu && toggleMenu();
-  };
+const NavBar = ({ isOpen, bgActive = false, onClickHamburger }) => {
   return (
-    <nav id={styles.navbar}>
+    <nav id={styles.navbar} className={cn({ [styles.bgActive]: bgActive })}>
       <div className={styles.navWrapper}>
         <p className={styles.brand}>LOGO</p>
-        <a
-          className={cn(styles.menuButton, { [styles.active]: openMenu })}
-          onClick={onToogleMenu}
+        <div
+          className={cn(styles.menuButton, { [styles.active]: isOpen })}
+          onClick={onClickHamburger}
         >
-          <span></span>
-        </a>
+          <span />
+        </div>
       </div>
     </nav>
   );
