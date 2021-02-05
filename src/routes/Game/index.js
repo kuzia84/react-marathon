@@ -133,17 +133,11 @@ const GamePage = () => {
     history.push("/");
   };
   const [pokemons, setPokemons] = useState(POKEMONS);
-  const newPokemons = pokemons.map((item) => item);
 
   const onCardClick = (id) => {
-    newPokemons.forEach((element) => {
-      if (element.id === id && element.active === true) {
-        element.active = false;
-      } else if (element.id === id) {
-        element.active = true;
-      }
-    });
-
+    const newPokemons = pokemons.map((item) =>
+      item.id === id ? { ...item, active: !item.active } : item
+    );
     setPokemons(newPokemons);
   };
 
