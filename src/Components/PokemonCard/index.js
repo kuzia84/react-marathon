@@ -4,6 +4,7 @@ import cardBack from "../../img/card-back-side.jpg";
 import cn from "classnames";
 
 const PokemonCard = ({
+  keyId,
   name,
   img,
   id,
@@ -13,7 +14,7 @@ const PokemonCard = ({
   onCardClick,
 }) => {
   const handleActive = () => {
-    onCardClick && onCardClick(id);
+    onCardClick && onCardClick(keyId);
   };
   return (
     <div className={styles.root} onClick={handleActive}>
