@@ -6,19 +6,48 @@ import FinishPage from "./routes/Finish";
 import { PokemonContext } from "../../context/pokemonContext";
 
 const GamePage = () => {
+  const [selectedPokemons, setSelectedPokemons] = useState({});
   const match = useRouteMatch();
-  const [pokemon, setPokemon] = useState("");
-  const addPokemon = (newPokemon) => {
-    setPokemon((prevState) => {
-      const newPok = [...prevState, newPokemon];
-      // newPok.filter((item) => item[0][0] !== newPokemon[0][0]);
-      // console.log("newPok: ", newPok);
-      return newPok;
+  const handleSelectedPokemons = (key, pokemon) => {
+    setSelectedPokemons((prevState) => {
+      if (prevState[key]) {
+        const copyState = { ...prevState };
+        delete copyState[key];
+        return copyState;
+      }
+
+      return {
+        ...prevState,
+        [key]: pokemon,
+      };
     });
+  };
+  const [player2Cards, setPlayer2Cards] = useState([]);
+  const handlePlayer2Cards = (player2) => {
+    setPlayer2Cards((prevState) => ({ ...prevState, player2 }));
+  };
+  const [gameResult, setGameResult] = useState(null);
+  const handleGameResult = (data) => {
+    setGameResult(data);
+  };
+  const handleResetContext = () => {
+    setSelectedPokemons({});
+    setPlayer2Cards([]);
+    setGameResult(null);
   };
 
   return (
-    <PokemonContext.Provider value={{ pokemon, addPokemon: addPokemon }}>
+    <PokemonContext.Provider
+      value={{
+        pokemons: selectedPokemons,
+        onSelectedPokemons: handleSelectedPokemons,
+        player2: player2Cards,
+        onPlayer2Cards: handlePlayer2Cards,
+        finalResult: gameResult,
+        writeGameResult: handleGameResult,
+        resetContext: handleResetContext,
+      }}
+    >
       <Switch>
         <Route path={`${match.path}/`} exact component={StartPage} />
         <Route path={`${match.path}/board`} component={BoardPage} />

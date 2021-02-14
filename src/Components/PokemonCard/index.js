@@ -8,18 +8,19 @@ const PokemonCard = ({
   id,
   type,
   values,
-  isActive = false,
-  isSelected = false,
+  isActive,
+  isSelected,
   onCardClick,
   className,
   minimize,
+  possession,
 }) => {
-  const handleActive = () => {
+  const handleClickCard = () => {
     onCardClick && onCardClick(id);
   };
   return (
     <div
-      onClick={handleActive}
+      onClick={handleClickCard}
       className={cn(className, styles.pokemonCard, {
         [styles.active]: isActive,
         [styles.selected]: isSelected,
@@ -27,7 +28,7 @@ const PokemonCard = ({
     >
       <div className={styles.cardFront}>
         <div className={cn(styles.wrap, styles.front)}>
-          <div className={cn(styles.pokemon, styles[type])}>
+          <div className={cn(styles.pokemon, styles[type], styles[possession])}>
             <div className={styles.values}>
               <div className={cn(styles.count, styles.top)}>{values.top}</div>
               <div className={cn(styles.count, styles.right)}>

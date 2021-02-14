@@ -1,4 +1,4 @@
-import { useRouteMatch, Route, Switch, Redirect } from "react-router-dom";
+import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 
 import cn from "classnames";
 
@@ -13,16 +13,18 @@ import MenuNavbar from "./Components/MenuNavbar";
 import styles from "./style.module.css";
 
 const App = () => {
-  const match = useRouteMatch("/");
+  const location = useLocation();
+  const isPadding =
+    location.pathname === "/" || location.pathname === "/game/board";
   return (
     <Switch>
       <Route path="/404" component={NotFoundPage} />
       <Route>
         <>
-          <MenuNavbar bgActive={!match.isExact} />
+          <MenuNavbar bgActive={!isPadding} />
           <div
             className={cn(styles.wrap, {
-              [styles.isHomePage]: match.isExact,
+              [styles.isHomePage]: isPadding,
             })}
           >
             <Switch>

@@ -10,74 +10,48 @@ import { FireBaseContext } from "../../../../context/firebaseContext";
 
 const StartPage = () => {
   const firebase = useContext(FireBaseContext);
+  const pokemonContext = useContext(PokemonContext);
+
+  const history = useHistory();
+  const handleStartGameClick = () => {
+    history.push("/game/board");
+  };
   const [pokemons, setPokemons] = useState({});
 
   useEffect(() => {
     firebase.getPokemonSoket((pokemons) => {
       setPokemons(pokemons);
     });
-  }, []);
-  const pokemonContext = useContext(PokemonContext);
+    return () => firebase.offPokemonSoket();
+  }, [firebase]);
 
-  const onCardClick = (id) => {
-    const newPokemon = Object.entries(pokemons).filter(
-      (item) => item[1].id === id
-    );
-    pokemonContext.addPokemon(newPokemon);
-    setPokemons((prevState) => {
-      return Object.entries(prevState).reduce((acc, item) => {
-        const pokemon = { ...item[1] };
-        if (pokemon.id === id) {
-          pokemon.isSelected = !pokemon.isSelected;
-        }
-        acc[item[0]] = pokemon;
-        // firebase.postPokemon(item[0], pokemon);
-        return acc;
-      }, {});
-    });
-  };
-  const addPokemon = () => {
-    const data = {
-      abilities: ["blaze", "solar-power"],
-      stats: {
-        hp: 39,
-        attack: 52,
-        defense: 43,
-        "special-attack": 60,
-        "special-defense": 50,
-        speed: 65,
+  const handleChangeSelected = (key) => {
+    const pokemon = { ...pokemons[key] };
+    pokemonContext.onSelectedPokemons(key, pokemon);
+    setPokemons((prevState) => ({
+      ...prevState,
+      [key]: {
+        ...prevState[key],
+        selected: !prevState[key].selected,
       },
-      type: "fire",
-      img:
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
-      name: "charmander",
-      base_experience: 62,
-      height: 6,
-      id: 4,
-      values: {
-        top: 7,
-        right: 6,
-        bottom: 1,
-        left: 4,
-      },
-    };
-    firebase.addPokemon(data);
-  };
-  const history = useHistory();
-  const startGame = () => {
-    history.push("/game/board");
+    }));
   };
 
   return (
     <Layout title="This is game page!">
-      {/* <button onClick={addPokemon}>Add pokemon</button> */}
-      <div className={styles.flex}>
-        <button onClick={startGame}>Start game</button>
+      <div className={styles.buttonWrap}>
+        <button
+          onClick={handleStartGameClick}
+          disabled={Object.keys(pokemonContext.pokemons).length < 5}
+        >
+          Start game
+        </button>
       </div>
       <div className={styles.flex}>
         {Object.entries(pokemons).map(
-          ([key, { name, img, id, type, values, isActive, isSelected }]) => (
+          ([key, { name, img, id, type, values, selected }]) => (
             <PokemonCard
+              className={styles.card}
               key={key}
               name={name}
               img={img}
@@ -85,8 +59,15 @@ const StartPage = () => {
               type={type}
               values={values}
               isActive={true}
-              isSelected={isSelected}
-              onCardClick={onCardClick}
+              isSelected={selected}
+              onCardClick={() => {
+                if (
+                  Object.keys(pokemonContext.pokemons).length < 5 ||
+                  selected
+                ) {
+                  handleChangeSelected(key);
+                }
+              }}
             />
           )
         )}
