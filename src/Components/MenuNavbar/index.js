@@ -30,7 +30,7 @@ const MenuNavbar = ({ bgActive }) => {
         onCloseModal={handleClickLogin}
         isOpen={isOpenModal}
       >
-        <LoginForm onSubmit={handleSubmitLoginForm} />
+        <LoginForm onSubmit={handleSubmitLoginForm} isOpen={isOpenModal} />
       </Modal>
     </>
   );

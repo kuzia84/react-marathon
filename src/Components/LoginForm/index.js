@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../Input";
 
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = ({ onSubmit, isOpen }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleSubmitForm = (e) => {
@@ -10,8 +10,12 @@ const LoginForm = ({ onSubmit }) => {
     setEmail("");
     setPassword("");
   };
+  useEffect(() => {
+    setEmail("");
+    setPassword("");
+  }, [isOpen]);
   return (
-    <form onSubmit={handleSubmitForm}>
+    <form onSubmit={handleSubmitForm} id="loginForm">
       <Input
         name="email"
         label="Email"
