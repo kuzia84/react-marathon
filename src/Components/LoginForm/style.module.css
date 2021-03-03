@@ -1,0 +1,8 @@
+.switch {
+    float: right;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 1rem 0;
+    color: #f300b4;
+}
