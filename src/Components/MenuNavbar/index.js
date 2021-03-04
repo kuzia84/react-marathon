@@ -32,6 +32,7 @@ const MenuNavbar = ({ bgActive }) => {
       if (response.hasOwnProperty("error")) {
         NotificationManager.error(response.error.message, "Ошибка!");
       } else {
+        localStorage.setItem("idToken", response.idToken);
         NotificationManager.success("Вы вошли");
       }
       console.log("response: ", response);
